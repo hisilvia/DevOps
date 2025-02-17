@@ -1,5 +1,5 @@
 resource "aws_security_group" "my_security_group" {
-  vpc_id = aws_vpc.my_vpc.id
+  vpc_id = module.my-vpc.vpc_id
 
   #Inbound for all instances
   ingress {
@@ -87,8 +87,6 @@ resource "aws_security_group" "my_security_group" {
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-
 
   tags = {
     Name = "my_security_group"

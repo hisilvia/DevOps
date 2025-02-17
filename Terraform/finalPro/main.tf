@@ -1,11 +1,7 @@
-provider "aws" {
-    region = "eu-west-1"
-}
-
 resource "aws_instance" "backend_app" {
   ami = "ami-03fd334507439f4d1"
   instance_type = "t2.medium"
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id = module.my-vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.my_security_group.id]
   associate_public_ip_address = true
   user_data = <<-EOF
@@ -97,7 +93,7 @@ resource "aws_instance" "backend_app" {
 resource "aws_instance" "mysql_server" {
   ami = "ami-03fd334507439f4d1"
   instance_type = "t2.micro"
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id = module.my-vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.my_security_group.id]
   associate_public_ip_address = true
   user_data = <<-EOF
@@ -115,7 +111,7 @@ resource "aws_instance" "mysql_server" {
 resource "aws_instance" "frontend_app" {
   ami = "ami-03fd334507439f4d1"
   instance_type = "t2.medium"
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id = module.my-vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.my_security_group.id]
   associate_public_ip_address = true
   user_data = <<-EOF
@@ -215,7 +211,7 @@ resource "aws_instance" "kubernetes_master" {
   ami = "ami-03fd334507439f4d1"
   instance_type = "t2.medium"
   subnet_id = module.my-vpc.public_subnets[0]
-  vpc_security_group_ids =  [ aws_security_group.assessment_security_group.id ]
+  vpc_security_group_ids =  [ aws_security_group.my_security_group.id ]
   associate_public_ip_address = true
   
   user_data = <<-EOF
@@ -298,7 +294,7 @@ resource "aws_instance" "jenkins_server" {
   ami = "ami-03fd334507439f4d1"
   instance_type = "t2.medium"
   subnet_id = module.my-vpc.public_subnets[0]
-  vpc_security_group_ids =  [ aws_security_group.assessment_security_group.id ]
+  vpc_security_group_ids =  [ aws_security_group.my_security_group.id ]
   associate_public_ip_address = true
   
   user_data = <<-EOF
